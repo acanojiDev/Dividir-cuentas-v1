@@ -4,6 +4,7 @@ package com.example.dividircuentasv1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,7 +47,8 @@ private fun MainScreen() {
     var cadaUno by remember { mutableFloatStateOf(0f) }
     Column(Modifier
         .padding(top = 80.dp)
-        .padding(8.dp)) {
+        .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp)) {
         CantidadTextField(
             cantidad,
             onCantidadChange = { nuevaCantidad -> cantidad = nuevaCantidad }
@@ -54,7 +57,9 @@ private fun MainScreen() {
             comensales,
             onNumeroComensalesChange = { nuevoComensales -> comensales = nuevoComensales }
         )
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(270.dp)) {
             Text(text = stringResource(R.string.Round_tip))
             RedondearPropinaSwitch(
                 propinaVerificado,
