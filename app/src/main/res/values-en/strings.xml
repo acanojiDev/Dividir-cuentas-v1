@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Split Accounts V2</string>
+    <string name="quantity">Quantity</string>
+    <string name="people">Diners</string>
+    <string name="Round_tip">Round Tip</string>
+    <string name="calculate">Calculate</string>
+    <string name="appreciation">Rating</string>
+    <string name="total_quantity">Total Quantity:</string>
+    <string name="each_quantity">Each:</string>
+</resources>

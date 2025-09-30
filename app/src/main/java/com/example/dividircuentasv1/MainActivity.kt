@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
@@ -15,62 +15,73 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.AppTheme
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContent{
-            var cantidad by remember { mutableStateOf("") }
-            var comensales by remember {mutableStateOf("")}
-            var propinaVerificado by remember { mutableStateOf(false) }
-            var propinaSlider by remember {mutableIntStateOf(0)}
-
-            var totalConPropina by remember { mutableFloatStateOf(0f) }
-            var cadaUno by remember { mutableFloatStateOf(0f) }
-            Column {
-                CantidadTextField(
-                    cantidad,
-                    onCantidadChange = {nuevaCantidad -> cantidad = nuevaCantidad}
-                )
-                ComensalesTextField(
-                    comensales,
-                    onNumeroComensalesChange = {nuevoComensales -> comensales = nuevoComensales}
-                )
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Redondear Propina")
-                    RedondearPropinaSwitch(
-                        propinaVerificado,
-                        onPropinaChange = {nuevoEstadoPropina -> propinaVerificado = nuevoEstadoPropina}
-                    )
-                }
-                Text(text = "Valoración")
-                if(!propinaVerificado)
-                    SliderPropina(
-                        propinaSlider,
-                        onSliderChange = {nuevaPropina -> propinaSlider = nuevaPropina},
-                        enabled = false
-                    )
-                else
-                    SliderPropina(
-                        propinaSlider,
-                        onSliderChange = {nuevaPropina -> propinaSlider = nuevaPropina},
-                        enabled = true
-                    )
-                Calcular{
-                    val (total, cadaUnoCalculo) = pagarTotal(cantidad,comensales,propinaSlider)
-                    totalConPropina = total
-                    cadaUno = cadaUnoCalculo
-                }
-                if(cantidad.isNotEmpty() && comensales.isNotEmpty()){
-                    Text(text="Cantidad total: ${"%.2f".format(totalConPropina)}", fontSize = 25.sp)
-                    Text(text="Cada uno: ${"%.2f".format(cadaUno)}", fontSize = 25.sp)
-                }
+            AppTheme {
+                MainScreen()
             }
+        }
+    }
+}
+
+@Composable
+private fun MainScreen() {
+    var cantidad by remember { mutableStateOf("") }
+    var comensales by remember { mutableStateOf("") }
+    var propinaVerificado by remember { mutableStateOf(false) }
+    var propinaSlider by remember { mutableIntStateOf(0) }
+
+    var totalConPropina by remember { mutableFloatStateOf(0f) }
+    var cadaUno by remember { mutableFloatStateOf(0f) }
+    Column(Modifier
+        .padding(top = 80.dp)
+        .padding(8.dp)) {
+        CantidadTextField(
+            cantidad,
+            onCantidadChange = { nuevaCantidad -> cantidad = nuevaCantidad }
+        )
+        ComensalesTextField(
+            comensales,
+            onNumeroComensalesChange = { nuevoComensales -> comensales = nuevoComensales }
+        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(text = stringResource(R.string.Round_tip))
+            RedondearPropinaSwitch(
+                propinaVerificado,
+                onPropinaChange = { nuevoEstadoPropina -> propinaVerificado = nuevoEstadoPropina }
+            )
+        }
+        Text(text = stringResource(R.string.appreciation))
+        if (!propinaVerificado)
+            SliderPropina(
+                propinaSlider,
+                onSliderChange = { nuevaPropina -> propinaSlider = nuevaPropina },
+                enabled = false
+            )
+        else
+            SliderPropina(
+                propinaSlider,
+                onSliderChange = { nuevaPropina -> propinaSlider = nuevaPropina },
+                enabled = true
+            )
+        Calcular {
+            val (total, cadaUnoCalculo) = pagarTotal(cantidad, comensales, propinaSlider)
+            totalConPropina = total
+            cadaUno = cadaUnoCalculo
+        }
+        if (cantidad.isNotEmpty() && comensales.isNotEmpty()) {
+            Text(text = "Cantidad total: ${"%.2f".format(totalConPropina)}", fontSize = 25.sp)
+            Text(text = "Cada uno: ${"%.2f".format(cadaUno)}", fontSize = 25.sp)
         }
     }
 }
@@ -85,7 +96,7 @@ fun CantidadTextField(
     OutlinedTextField(
         value = cantidad,
         onValueChange = {onCantidadChange(it)},
-        placeholder = { Text("Cantidad")},
+        placeholder = { Text(text = stringResource(R.string.quantity))},
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal
         ),
@@ -101,7 +112,7 @@ fun ComensalesTextField(
     OutlinedTextField(
         value = numeroComensales,
         onValueChange = {onNumeroComensalesChange(it)},
-        placeholder = { Text("Comensales")},
+        placeholder = { Text(text = stringResource(R.string.people))},
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal
         ),
@@ -146,7 +157,7 @@ fun Calcular(onClick: () -> Unit) {
         onClick = { onClick() },
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Calcular")
+        Text(text = stringResource(R.string.calculate))
     }
 }
 
@@ -162,34 +173,4 @@ fun pagarTotal(cantidad: String, comensales: String, propina: Int): Pair<Float, 
         cantidadConPropina = cantidad.toFloat()
     }
     return Pair(cantidadConPropina,totalCadaUno)
-}
-
-@Composable
-fun Resultado(){
-    var cantidad by remember { mutableStateOf("") }
-    var comensales by remember {mutableStateOf("")}
-    var propinaVerificado by remember { mutableStateOf(false) }
-    var propinaSlider by remember {mutableIntStateOf(0)}
-
-    CantidadTextField(
-        cantidad = cantidad,
-        onCantidadChange = {nuevaCantidad -> cantidad = nuevaCantidad}
-    )
-
-    ComensalesTextField(
-        numeroComensales = comensales,
-        onNumeroComensalesChange =  {nuevoComensales -> comensales = nuevoComensales}
-    )
-
-    RedondearPropinaSwitch(
-        checked = propinaVerificado,
-        onPropinaChange = {nuevoEstado -> propinaVerificado = nuevoEstado}
-    )
-
-    SliderPropina(
-        sliderPosition = propinaSlider,
-        onSliderChange = {nuevaPropina -> propinaSlider = nuevaPropina}
-    )
-
-    pagarTotal(cantidad,comensales,propinaSlider)
 }

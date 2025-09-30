@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Dividir Cuentas V1</string>
+    <string name="app_name">Split Accounts V2</string>
+    <string name="quantity">Cantidad</string>
+    <string name="people">Comensales</string>
+    <string name="Round_tip">Redondear Propina</string>
+    <string name="calculate">Calcular</string>
+    <string name="appreciation">Valoración</string>
+    <string name="total_quantity">Cantidad Total:</string>
+    <string name="each_quantity">Cada uno:</string>
 </resources>
