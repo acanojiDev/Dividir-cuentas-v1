@@ -7,10 +7,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -162,6 +167,9 @@ fun Calcular(onClick: () -> Unit) {
         onClick = { onClick() },
         modifier = Modifier.fillMaxWidth()
     ) {
+        Icon(imageVector = Icons.Default.Calculate,
+            contentDescription = "calculate_icon")
+        Spacer(modifier = Modifier.width(18.dp))
         Text(text = stringResource(R.string.calculate))
     }
 }
